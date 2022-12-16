@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'fancybar.dart';
+import 'fancy_bar.dart';
 
 class TopSection extends StatelessWidget {
   final GlobalKey<ScaffoldState> drawerKey;

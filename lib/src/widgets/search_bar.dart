@@ -22,29 +22,32 @@ class SearchBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  const Icon(Icons.search, color: Colors.white, size: 20),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: const Opacity(
-                      opacity: 0.8,
-                      child: TextField(
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        decoration: InputDecoration(
-                          hintText: 'Search here',
-                          hintStyle: TextStyle(color: Colors.white,)
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                const Icon(Icons.search, color: Colors.white, size: 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: const Opacity(
+                    opacity: 0.8,
+                    child: TextField(
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      decoration: InputDecoration(
+                        hintText: 'Search here',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
                         ),
-                      )
+                      ),
                     ),
                   ),
-                  const Opacity(
-                      opacity: 0.6,
-                      child: Icon(Icons.mic, color: Colors.white, size: 20))
-                ],
-              )),
+                ),
+                const Opacity(
+                    opacity: 0.6,
+                    child: Icon(Icons.mic, color: Colors.white, size: 20))
+              ],
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
