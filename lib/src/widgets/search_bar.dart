@@ -34,7 +34,7 @@ class SearchBar extends StatelessWidget {
                     child: TextField(
                       style: TextStyle(color: Colors.white, fontSize: 16),
                       decoration: InputDecoration(
-                        hintText: 'Search here',
+                        hintText: 'Durak Ekle',
                         hintStyle: TextStyle(
                           color: Colors.white,
                         ),

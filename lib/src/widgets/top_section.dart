@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'fancy_bar.dart';
 
 class TopSection extends StatelessWidget {
   final GlobalKey<ScaffoldState> drawerKey;
-  const TopSection({super.key,required this.drawerKey});
+  final Completer<GoogleMapController> controller;
+
+  const TopSection({super.key, required this.drawerKey, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +42,9 @@ class TopSection extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: (){
-                        print("mesaj");
+                      onTap: () async{
+                        Position position = await getUserCurrentLocation();
+                        _goToCurrentLocation(position);
                       },
                       child: Transform.rotate(
                           angle: 3.14 / 4,
@@ -52,5 +59,25 @@ class TopSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _goToCurrentLocation(Position position) async {
+    CameraPosition cameraPosition = CameraPosition(
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 14,
+    );
+
+    final GoogleMapController controller = await this.controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR" + error.toString());
+    });
+    return await Geolocator.getCurrentPosition();
   }
 }
