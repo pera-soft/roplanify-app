@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/widgets/draggable_section.dart';
+import 'package:pera/src/services/LocationService.dart';
+import 'package:pera/src/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/widgets/top_section.dart';
 
 class Home extends StatefulWidget {
@@ -17,8 +18,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final Completer<GoogleMapController> _controller = Completer();
-  double top = 0.0;
-  double initialTop = 0.0;
+  LocationService ls = LocationService();
+  double deviceHeight = 0.0;
+  double mapHeight = 0.0;
 
   static const CameraPosition _kIstanbul = CameraPosition(
     target: LatLng(41.0053215, 29.0121795),
@@ -26,9 +28,23 @@ class _HomeState extends State<Home> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    deviceHeight = window.physicalSize.longestSide / window.devicePixelRatio;
+    ls.getCurrentLocation().then((value) {
+      ls.goToCurrentLocation(_controller, value);
+    });
+  }
+
+  setMapHeight(double height){
+    setState(() {
+      mapHeight = deviceHeight - height;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final baseTop = MediaQuery.of(context).size.height * 0.9;
-    const searchBarHeight = 54.0;
+    double minHeight = 85 / MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -37,7 +53,7 @@ class _HomeState extends State<Home> {
         body: Stack(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: mapHeight,
               child: GoogleMap(
                 mapType: MapType.terrain,
                 initialCameraPosition: _kIstanbul,
@@ -59,20 +75,17 @@ class _HomeState extends State<Home> {
               drawerKey: _scaffoldKey,
               controller: _controller,
             ),
-            GestureDetector(
-              onPanUpdate: (DragUpdateDetails details) {
-                final double scrollPos = details.globalPosition.dy;
-                if (scrollPos < baseTop && scrollPos > searchBarHeight) {
-                  setState(() {
-                    top = scrollPos;
-                  });
-                }
+            SnappingSheetWidget(mapHeightCallback: setMapHeight),
+            /*DraggableScrollableSheet(
+              initialChildSize: minHeight,
+              minChildSize: minHeight,
+              maxChildSize: 0.9,
+              snapSizes: [minHeight, 0.5, 0.9],
+              snap: true,
+              builder: (BuildContext context, scrollSheetController) {
+                return DraggableSection(controller: scrollSheetController);
               },
-              child: DraggableSection(
-                top: top == 0.0 ? baseTop : top,
-                searchBarHeight: searchBarHeight,
-              ),
-            ),
+            ),*/
           ],
         ),
       ),
