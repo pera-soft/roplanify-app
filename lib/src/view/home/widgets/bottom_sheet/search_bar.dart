@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/Icon/search_bar_%C4%B1con.dart';
+import 'package:pera/src/core/constants/enums/snapping_sheet_status_enum.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SearchBar extends StatefulWidget {
@@ -20,7 +22,7 @@ class SearchBar extends StatefulWidget {
   State<SearchBar> createState() => _SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _SearchBarState extends State<SearchBar> with BaseSingleton {
   bool clearButtonVisibility = false;
 
   @override
@@ -44,8 +46,12 @@ class _SearchBarState extends State<SearchBar> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    const Icon(Icons.search, color: Colors.white, size: 20),
+                  children: [
+                    CustomSearchBarIcon(
+                      icon: icons.search,
+                      size: 20,
+                      color: colors.white,
+                    ),
                     Expanded(
                       child: Opacity(
                         opacity: 0.8,
@@ -101,23 +107,23 @@ class _SearchBarState extends State<SearchBar> {
                                 }
                               }
                             },
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                            cursorColor: Colors.white,
-                            decoration: const InputDecoration.collapsed(
+                            style: TextStyle(color: colors.white, fontSize: 16),
+                            cursorColor: colors.white,
+                            decoration: InputDecoration.collapsed(
                               border: InputBorder.none,
-                              hintText: 'Durak Ekle',
+                              hintText: constants.Durak_Ekle,
                               hintStyle: TextStyle(
-                                color: Colors.white,
+                                color: colors.white,
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const Opacity(
+                    Opacity(
                         opacity: 0.6,
-                        child: Icon(Icons.mic, color: Colors.white, size: 20)),
+                        child: CustomSearchBarIcon(
+                            icon: icons.mic, size: 20, color: colors.white)),
                     clearButtonVisibility
                         ? Opacity(
                             opacity: 0.6,
@@ -133,8 +139,11 @@ class _SearchBarState extends State<SearchBar> {
                                     });
                                   }
                                 },
-                                icon: const Icon(FontAwesomeIcons.xmark,
-                                    color: Colors.white, size: 20)))
+                                icon: CustomSearchBarIcon(
+                                  color: colors.white,
+                                  size: 20,
+                                  icon: icons.xmark,
+                                )))
                         : Container()
                   ],
                 ),

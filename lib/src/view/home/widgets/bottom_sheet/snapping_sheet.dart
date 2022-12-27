@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
-import 'package:pera/src/widgets/bottom_sheet/draggable_section.dart';
-import 'package:pera/src/widgets/bottom_sheet/search_bar.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/constants/enums/snapping_sheet_status_enum.dart';
+import 'package:pera/src/view/home/widgets/bottom_sheet/draggable_section.dart';
+import 'package:pera/src/view/home/widgets/bottom_sheet/search_bar.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SnappingSheetWidget extends StatefulWidget {
@@ -13,7 +14,8 @@ class SnappingSheetWidget extends StatefulWidget {
   State<SnappingSheetWidget> createState() => _SnappingSheetWidgetState();
 }
 
-class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
+class _SnappingSheetWidgetState extends State<SnappingSheetWidget>
+    with BaseSingleton {
   final ScrollController listViewController = ScrollController();
   final snappingSheetController = SnappingSheetController();
   TextEditingController searchController = TextEditingController();
@@ -55,10 +57,10 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
       ],
       grabbing: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
-            BoxShadow(blurRadius: 25, color: Colors.black.withOpacity(0.2)),
+            BoxShadow(blurRadius: 25, color: colors.black.withOpacity(0.2)),
           ],
         ),
         child: Column(
@@ -69,18 +71,17 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
               width: 50,
               height: 5,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: colors.blue,
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
             SearchBar(
-              draggableController: snappingSheetController,
-              setText: setSearchText,
-              controller: searchController,
-              status: status
-            ),
+                draggableController: snappingSheetController,
+                setText: setSearchText,
+                controller: searchController,
+                status: status),
             Container(
-              color: Colors.grey.shade200,
+              color: colors.green2,
               height: 2,
               margin: const EdgeInsets.all(15).copyWith(top: 0, bottom: 0),
             )
@@ -93,7 +94,7 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
         draggable: true,
         childScrollController: listViewController,
         child: Container(
-          color: Colors.white,
+          color: colors.white,
           child: DraggableSection(
               controller: listViewController,
               searchText: searchText,

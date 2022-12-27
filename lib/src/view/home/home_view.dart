@@ -4,11 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/services/LocationService.dart';
-import 'package:pera/src/widgets/bottom_sheet/snapping_sheet.dart';
-import 'package:pera/src/widgets/top_section.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/view/home/service/LocationService.dart';
+import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
+import 'package:pera/src/view/home/widgets/top_section.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatefulWidget with BaseSingleton {
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -19,8 +20,8 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final Completer<GoogleMapController> _controller = Completer();
   LocationService ls = LocationService();
-  double deviceHeight = 0.0;
-  double mapHeight = 0.0;
+  double deviceHeight = 0;
+  double mapHeight = 0;
 
   static const CameraPosition _kIstanbul = CameraPosition(
     target: LatLng(41.0053215, 29.0121795),
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-  setMapHeight(double height){
+  setMapHeight(double height) {
     setState(() {
       mapHeight = deviceHeight - height;
     });
@@ -44,8 +45,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    double minHeight = 85 / MediaQuery.of(context).size.height;
-
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,

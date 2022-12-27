@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
 
-class FancyBar extends StatelessWidget {
+class FancyBar extends StatelessWidget with BaseSingleton {
   const FancyBar(
       {super.key,
       required this.height,
@@ -18,12 +19,12 @@ class FancyBar extends StatelessWidget {
       width: 46,
       margin: margin,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: <BoxShadow>[
           BoxShadow(
             blurRadius: 30,
-            color: Colors.grey.shade300,
+            color: colors.grey3,
           )
         ],
       ),

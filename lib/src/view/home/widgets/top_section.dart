@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/services/LocationService.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/Icon/fancybar_rotate_icon.dart';
+import 'package:pera/src/view/home/service/LocationService.dart';
 import 'fancy_bar.dart';
 
-class TopSection extends StatelessWidget {
+class TopSection extends StatelessWidget with BaseSingleton {
   final GlobalKey<ScaffoldState> drawerKey;
   final Completer<GoogleMapController> controller;
 
@@ -22,23 +24,24 @@ class TopSection extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           Column(
-            children: <Widget>[
+            children: [
               GestureDetector(
                 onTap: () {
                   drawerKey.currentState!.openDrawer();
                 },
-                child: const FancyBar(
+                child: FancyBar(
                   height: 46,
-                  margin: EdgeInsets.only(left: 20, top: 30),
-                  child: Icon(Icons.menu, color: Colors.black, size: 20),
+                  margin: const EdgeInsets.only(left: 20, top: 30),
+                  child: FancyBarIcon(
+                      icons: icons.menu, color: colors.black, size: 20),
                 ),
               )
             ],
           ),
           Column(
-            children: <Widget>[
+            children: [
               GestureDetector(
                 onTap: () async {
                   Position position = await ls.getCurrentLocation();
@@ -49,8 +52,11 @@ class TopSection extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 20, top: 30),
                   child: Transform.rotate(
                     angle: 3.14 / 4,
-                    child: const Icon(Icons.navigation,
-                        color: Colors.black, size: 20),
+                    child: FancyBarIcon(
+                      icons: icons.navigation,
+                      color: colors.black,
+                      size: 20,
+                    ),
                   ),
                 ),
               ),
