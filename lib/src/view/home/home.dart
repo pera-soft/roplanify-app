@@ -37,17 +37,20 @@ class _HomeState extends State<Home> {
   }
 
   setMapHeight(double height){
-    setState(() {
-      mapHeight = deviceHeight - height;
-    });
+    if(mounted){
+      setState(() {
+        if(deviceHeight - height > deviceHeight / 2){
+          mapHeight = deviceHeight - height;
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    double minHeight = 85 / MediaQuery.of(context).size.height;
-
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         drawer: const Drawer(),
         body: Stack(
@@ -76,16 +79,6 @@ class _HomeState extends State<Home> {
               controller: _controller,
             ),
             SnappingSheetWidget(mapHeightCallback: setMapHeight),
-            /*DraggableScrollableSheet(
-              initialChildSize: minHeight,
-              minChildSize: minHeight,
-              maxChildSize: 0.9,
-              snapSizes: [minHeight, 0.5, 0.9],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return DraggableSection(controller: scrollSheetController);
-              },
-            ),*/
           ],
         ),
       ),

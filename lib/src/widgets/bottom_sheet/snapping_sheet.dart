@@ -24,7 +24,9 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
 
   setSearchText() {
     setState(() {
-      searchText.value = searchController.text;
+      if(searchController.text.isNotEmpty) {
+        searchText.value = searchController.text;
+      }
     });
   }
 
@@ -33,7 +35,7 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
     return SnappingSheet(
       controller: snappingSheetController,
       onSheetMoved: (data) {
-        //mapHeightCallback(data.pixels);
+        widget.mapHeightCallback(data.pixels);
       },
       lockOverflowDrag: true,
       snappingPositions: const [
@@ -74,11 +76,10 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
               ),
             ),
             SearchBar(
-              draggableController: snappingSheetController,
-              setText: setSearchText,
-              controller: searchController,
-              status: status
-            ),
+                draggableController: snappingSheetController,
+                setText: setSearchText,
+                controller: searchController,
+                status: status),
             Container(
               color: Colors.grey.shade200,
               height: 2,

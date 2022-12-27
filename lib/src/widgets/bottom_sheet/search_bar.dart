@@ -79,11 +79,13 @@ class _SearchBarState extends State<SearchBar> {
                               }
                             },
                             onSubmitted: (String val) {
-                              if (mounted) {
-                                setState(() {
-                                  widget.status.value =
-                                      SnappingSheetStatus.SEARCH;
-                                });
+                              if(val.isNotEmpty){
+                                if (mounted) {
+                                  setState(() {
+                                    widget.status.value =
+                                        SnappingSheetStatus.SEARCH;
+                                  });
+                                }
                               }
                             },
                             onChanged: (String val) {
