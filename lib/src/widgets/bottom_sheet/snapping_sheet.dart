@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
+import 'package:pera/src/model/enums/snapping_sheet_status.dart';
 import 'package:pera/src/widgets/bottom_sheet/draggable_section.dart';
 import 'package:pera/src/widgets/bottom_sheet/search_bar.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
@@ -18,8 +18,7 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget> {
   final snappingSheetController = SnappingSheetController();
   TextEditingController searchController = TextEditingController();
   ValueNotifier<SnappingSheetStatus> status =
-      ValueNotifier(SnappingSheetStatus.LOCATIONS);
-
+      ValueNotifier(SnappingSheetStatus.locations);
   ValueNotifier<String> searchText = ValueNotifier("");
 
   setSearchText() {

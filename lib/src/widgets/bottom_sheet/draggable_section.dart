@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
+import 'package:pera/src/model/location.dart';
+import 'package:pera/src/model/place.dart';
+import 'package:pera/src/model/enums/snapping_sheet_status.dart';
 import 'package:pera/src/widgets/bottom_sheet/location_card_sheet.dart';
 import 'package:pera/src/widgets/bottom_sheet/route_locations_sheet.dart';
 import 'package:pera/src/widgets/bottom_sheet/search_result_sheet.dart';
@@ -20,8 +22,9 @@ class DraggableSection extends StatefulWidget {
 }
 
 class _DraggableSectionState extends State<DraggableSection> {
-  ValueNotifier<Map<String, dynamic>> selectedData = ValueNotifier({});
-  ValueNotifier<List<Map<String, dynamic>>> routeLocations = ValueNotifier([]);
+  ValueNotifier<Place> selectedData =
+      ValueNotifier(Place("", "", Location(0, 0)));
+  ValueNotifier<List<Place>> routeLocations = ValueNotifier([]);
   late SnappingSheetStatus status;
 
   @override
@@ -45,14 +48,16 @@ class _DraggableSectionState extends State<DraggableSection> {
           BoxShadow(blurRadius: 25, color: Colors.black.withOpacity(0.2)),
         ],
       ),
-      child: status == SnappingSheetStatus.SEARCH
+      child: status == SnappingSheetStatus.search
           ? SearchResultSheet(
               controller: widget.controller,
               status: widget.status,
               searchText: widget.searchText,
               selectedData: selectedData)
-          : status == SnappingSheetStatus.LOCATIONS
-              ? RouteLocationsSheet(scrollController: widget.controller, routeLocations: routeLocations)
+          : status == SnappingSheetStatus.locations
+              ? RouteLocationsSheet(
+                  scrollController: widget.controller,
+                  routeLocations: routeLocations)
               : LocationCardSheet(
                   controller: widget.controller,
                   status: widget.status,

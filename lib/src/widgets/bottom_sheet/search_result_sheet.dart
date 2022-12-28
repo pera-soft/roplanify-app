@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
-import 'package:pera/src/services/TestService.dart';
+import 'package:pera/src/model/place.dart';
+import 'package:pera/src/model/enums/snapping_sheet_status.dart';
+import 'package:pera/src/services/api_service.dart';
 
 class SearchResultSheet extends StatelessWidget {
   final ScrollController controller;
   final ValueNotifier<String> searchText;
   final ValueNotifier<SnappingSheetStatus> status;
-  final ValueNotifier<Map<String, dynamic>> selectedData;
+  final ValueNotifier<Place> selectedData;
 
   SearchResultSheet({Key? key, required this.controller, required this.searchText, required this.status, required this.selectedData}) : super(key: key);
 
-  TestService testService = TestService();
+  ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FutureBuilder(
-            future: testService.fetchData(searchText.value),
+            future: apiService.searchPlace(searchText.value),
             builder: (context, snapshot) {
               return Expanded(
                 child: ListView.builder(
@@ -26,12 +27,12 @@ class SearchResultSheet extends StatelessWidget {
                   itemCount: snapshot.hasData ? snapshot.data?.length : 1,
                   itemBuilder: (BuildContext context, int index) {
                     if (snapshot.hasData) {
-                      Map<String, dynamic> data = snapshot.data?[index];
+                      Place data = snapshot.data?[index];
 
                       return ListTile(
                         leading: const Icon(Icons.add_location_outlined,
                             size: 30),
-                        title: Text(data['title']),
+                        title: Text(data.name),
                         subtitle: const Text(
                           "Sümer, Zeytinburnu",
                           style: TextStyle(color: Colors.grey),
@@ -39,7 +40,7 @@ class SearchResultSheet extends StatelessWidget {
                         trailing:
                         const Icon(FontAwesomeIcons.angleRight),
                         onTap: () {
-                          updateStatus(SnappingSheetStatus.CARD);
+                          updateStatus(SnappingSheetStatus.card);
                           updateSelected(data);
                         },
                       );
@@ -59,7 +60,7 @@ class SearchResultSheet extends StatelessWidget {
     status.value = s;
   }
 
-  updateSelected(Map<String, dynamic> d) {
-    selectedData.value = d;
+  updateSelected(Place place) {
+    selectedData.value = place;
   }
 }

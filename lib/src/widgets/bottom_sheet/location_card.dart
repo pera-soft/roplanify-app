@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pera/src/model/place.dart';
 
 class LocationCard extends StatelessWidget {
-  final ValueNotifier<Map<String, dynamic>> data;
+  final ValueNotifier<Place> data;
 
   const LocationCard({Key? key, required this.data}) : super(key: key);
 
@@ -46,7 +47,7 @@ class LocationCard extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                data.value['title'],
+                data.value.name,
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),
               subtitle: const Text(

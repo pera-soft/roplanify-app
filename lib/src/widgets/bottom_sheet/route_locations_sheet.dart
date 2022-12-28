@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pera/src/model/place.dart';
 
 class RouteLocationsSheet extends StatefulWidget {
   final ScrollController scrollController;
-  final ValueNotifier<List<Map<String, dynamic>>> routeLocations;
+  final ValueNotifier<List<Place>> routeLocations;
 
   const RouteLocationsSheet(
       {Key? key, required this.scrollController, required this.routeLocations})
@@ -43,13 +44,13 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: widget.routeLocations.value.length,
                         itemBuilder: (BuildContext context, int index) {
-                          Map<String, dynamic> data =
+                          Place data =
                               widget.routeLocations.value[index];
 
                           return ListTile(
                             leading: const Icon(Icons.circle,
                                 size: 15, color: Colors.blue),
-                            title: Text(data['title']),
+                            title: Text(data.name),
                             subtitle: const Text(
                               "Sümer, Zeytinburnu",
                               style: TextStyle(color: Colors.grey),

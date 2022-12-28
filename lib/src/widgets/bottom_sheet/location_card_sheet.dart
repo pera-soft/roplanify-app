@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
+import 'package:pera/src/model/place.dart';
+import 'package:pera/src/model/enums/snapping_sheet_status.dart';
 import 'package:pera/src/widgets/bottom_sheet/location_card.dart';
 
 class LocationCardSheet extends StatefulWidget {
   final ScrollController controller;
   final ValueNotifier<SnappingSheetStatus> status;
-  final ValueNotifier<Map<String, dynamic>> selectedData;
-  final ValueNotifier<List<Map<String, dynamic>>> routeLocations;
+  final ValueNotifier<Place> selectedData;
+  final ValueNotifier<List<Place>> routeLocations;
 
   const LocationCardSheet({Key? key, required this.controller, required this.status, required this.selectedData, required this.routeLocations}) : super(key: key);
 
@@ -38,7 +39,7 @@ class _LocationCardSheetState extends State<LocationCardSheet> {
                   borderRadius: BorderRadius.circular(15)),
               elevation: 5,
               onPressed: () {
-                updateStatus(SnappingSheetStatus.SEARCH);
+                updateStatus(SnappingSheetStatus.search);
                 widget.routeLocations.value.remove(widget.selectedData.value);
               },
               color: Colors.red,

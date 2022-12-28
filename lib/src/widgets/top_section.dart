@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/services/LocationService.dart';
+import 'package:pera/src/services/location_service.dart';
 import 'fancy_bar.dart';
 
 class TopSection extends StatelessWidget {

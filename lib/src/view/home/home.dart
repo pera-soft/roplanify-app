@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/services/LocationService.dart';
+import 'package:pera/src/services/location_service.dart';
 import 'package:pera/src/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/widgets/top_section.dart';
 

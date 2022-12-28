@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pera/src/model/enums/SnappingSheetStatus.dart';
+import 'package:pera/src/model/enums/snapping_sheet_status.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SearchBar extends StatefulWidget {
@@ -83,7 +83,8 @@ class _SearchBarState extends State<SearchBar> {
                                 if (mounted) {
                                   setState(() {
                                     widget.status.value =
-                                        SnappingSheetStatus.SEARCH;
+                                        SnappingSheetStatus.search;
+                                    widget.setText();
                                   });
                                 }
                               }
@@ -131,7 +132,7 @@ class _SearchBarState extends State<SearchBar> {
                                     setState(() {
                                       clearButtonVisibility = false;
                                       widget.status.value =
-                                          SnappingSheetStatus.LOCATIONS;
+                                          SnappingSheetStatus.locations;
                                     });
                                   }
                                 },
