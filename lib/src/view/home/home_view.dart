@@ -4,12 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pera/src/core/base/base_singleton.dart';
-import 'package:pera/src/view/home/service/LocationService.dart';
+import 'package:pera/src/view/home/service/location_service.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/view/home/widgets/top_section.dart';
 
-class Home extends StatefulWidget with BaseSingleton {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -20,8 +19,8 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final Completer<GoogleMapController> _controller = Completer();
   LocationService ls = LocationService();
-  double deviceHeight = 0;
-  double mapHeight = 0;
+  double deviceHeight = 0.0;
+  double mapHeight = 0.0;
 
   static const CameraPosition _kIstanbul = CameraPosition(
     target: LatLng(41.0053215, 29.0121795),
@@ -45,49 +44,56 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double minHeight = 85 / MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
-        drawer: const Drawer(),
+        drawer: _drawer(),
         body: Stack(
           children: [
-            SizedBox(
-              height: mapHeight,
-              child: GoogleMap(
-                mapType: MapType.terrain,
-                initialCameraPosition: _kIstanbul,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                zoomControlsEnabled: false,
-                compassEnabled: true,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                  Factory<OneSequenceGestureRecognizer>(
-                    () => EagerGestureRecognizer(),
-                  ),
-                },
-              ),
-            ),
-            TopSection(
-              drawerKey: _scaffoldKey,
-              controller: _controller,
-            ),
+            _sizedboxMap(),
+            _topSection(),
             SnappingSheetWidget(mapHeightCallback: setMapHeight),
-            /*DraggableScrollableSheet(
-              initialChildSize: minHeight,
-              minChildSize: minHeight,
-              maxChildSize: 0.9,
-              snapSizes: [minHeight, 0.5, 0.9],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return DraggableSection(controller: scrollSheetController);
-              },
-            ),*/
           ],
         ),
       ),
+    );
+  }
+
+  Drawer _drawer() => const Drawer();
+
+  TopSection _topSection() {
+    return TopSection(
+      drawerKey: _scaffoldKey,
+      controller: _controller,
+    );
+  }
+
+  SizedBox _sizedboxMap() {
+    return SizedBox(
+      height: mapHeight,
+      child: _googleMap(),
+    );
+  }
+
+  GoogleMap _googleMap() {
+    return GoogleMap(
+      mapType: MapType.terrain,
+      initialCameraPosition: _kIstanbul,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
+      zoomControlsEnabled: false,
+      compassEnabled: true,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+        Factory<OneSequenceGestureRecognizer>(
+          () => EagerGestureRecognizer(),
+        ),
+      },
     );
   }
 }

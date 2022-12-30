@@ -18,17 +18,25 @@ class FancyBar extends StatelessWidget with BaseSingleton {
       height: height,
       width: 46,
       margin: margin,
-      decoration: BoxDecoration(
-        color: colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            blurRadius: 30,
-            color: colors.grey3,
-          )
-        ],
-      ),
+      decoration: _boxdecoration(),
       child: child,
     );
+  }
+
+  BoxDecoration _boxdecoration() {
+    return BoxDecoration(
+      color: colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: _boxshadow,
+    );
+  }
+
+  List<BoxShadow> get _boxshadow {
+    return <BoxShadow>[
+      BoxShadow(
+        blurRadius: 30,
+        color: colors.grey3,
+      )
+    ];
   }
 }
