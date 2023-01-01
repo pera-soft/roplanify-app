@@ -21,6 +21,7 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     return SingleChildScrollView(
         controller: widget.scrollController,
         child: widget.routeLocations.value.isEmpty
+<<<<<<< HEAD
             ? Container(
                 padding: const EdgeInsets.all(50),
                 child: Center(
@@ -76,5 +77,70 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
                   )
                 ],
               ));
+=======
+            ? _customContainer()
+            : _rootLocationColumn());
+  }
+
+  Column _rootLocationColumn() {
+    return Column(
+      children: [_customListViewBuilder(), _customContainerButon()],
+    );
+  }
+
+  Container _customContainerButon() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: MaterialButton(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        elevation: 5,
+        onPressed: () {},
+        color: colors.blue,
+        child: Text(
+          constants.Rotayi_Optimize_Et,
+          style: TextStyle(color: colors.white),
+        ),
+      ),
+    );
+  }
+
+  ListView _customListViewBuilder() {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: widget.routeLocations.value.length,
+        itemBuilder: (BuildContext context, int index) {
+          Place data = widget.routeLocations.value[index];
+
+          return ListTile(
+            leading: Icon(
+              Icons.circle,
+              size: 15,
+              color: colors.blue,
+            ),
+            title: Text(data.name),
+            subtitle: Text(
+              constants.Sumer_Zeytinburnu,
+              style: TextStyle(color: colors.grey),
+            ),
+            trailing: Icon(icons.angleRight),
+            onTap: () {},
+          );
+        });
+  }
+
+  Container _customContainer() {
+    return Container(
+      padding: const EdgeInsets.all(50),
+      child: Center(
+          child: Text(
+        constants.Durak_eklemek_icin,
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20, color: colors.grey),
+        textAlign: TextAlign.center,
+      )),
+    );
+>>>>>>> origin/emre
   }
 }
