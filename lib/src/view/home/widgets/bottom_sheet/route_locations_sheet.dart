@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/view/home/model/place.dart';
+import 'package:pera/src/view/home/model/route.dart';
+import 'package:pera/src/view/home/service/api_service.dart';
 
 class RouteLocationsSheet extends StatefulWidget {
   final ScrollController scrollController;
@@ -16,6 +18,7 @@ class RouteLocationsSheet extends StatefulWidget {
 
 class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     with BaseSingleton {
+  ApiService apiService = ApiService();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -38,7 +41,9 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 5,
-        onPressed: () {},
+        onPressed: () {
+          apiService.optimizeRoute(widget.routeLocations.value);
+        },
         color: colors.blue,
         child: Text(
           constants.Rotayi_Optimize_Et,
@@ -62,9 +67,12 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
               size: 15,
               color: colors.blue,
             ),
-            title: Text(data.name),
+            title: Text(data.name,maxLines: 1,
+              overflow: TextOverflow.ellipsis,),
             subtitle: Text(
-              constants.Sumer_Zeytinburnu,
+              data.formattedAddress,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(color: colors.grey),
             ),
             trailing: Icon(icons.angleRight),

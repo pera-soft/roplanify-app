@@ -32,9 +32,11 @@ class SearchResultSheet extends StatelessWidget {
                       return ListTile(
                         leading: const Icon(Icons.add_location_outlined,
                             size: 30),
-                        title: Text(data.name),
-                        subtitle: const Text(
-                          "Sümer, Zeytinburnu",
+                        title: Text(data.name, maxLines: 1, overflow: TextOverflow.ellipsis,),
+                        subtitle: Text(
+                          data.formattedAddress,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: Colors.grey),
                         ),
                         trailing:

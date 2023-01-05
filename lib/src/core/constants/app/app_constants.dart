@@ -12,7 +12,6 @@ class AppConstants {
   AppConstants.init();
 
   String get appTitle => "Roplanify";
-  String get Sumer_Zeytinburnu => "Sümer, Zeytinburnu";
   String get duragi_sil => "Durağı Sil";
   String get Durak_Ekle => 'Durak Ekle';
   String get Eklendi => "Eklendi";

@@ -46,13 +46,23 @@ class LocationCard extends StatelessWidget {
               ],
             ),
             ListTile(
-              title: Text(
-                data.value.name,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text(
+                  data.value.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
               ),
-              subtitle: const Text(
-                "Sümer, Zeytinburnu",
-                style: TextStyle(fontSize: 18),
+              subtitle:  Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  data.value.formattedAddress,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 18),
+                ),
               ),
             ),
             Container(
@@ -61,7 +71,9 @@ class LocationCard extends StatelessWidget {
                       bottom: BorderSide(width: 1, color: Colors.grey.shade400),
                       top: BorderSide(width: 1, color: Colors.grey.shade400))),
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: const TextField(
+              child:  const TextField(
+                minLines: 4,
+                maxLines: 4,
                 decoration: InputDecoration(
                     hintText: "Not Ekle",
                     border: InputBorder.none,

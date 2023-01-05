@@ -23,7 +23,7 @@ class DraggableSection extends StatefulWidget {
 
 class _DraggableSectionState extends State<DraggableSection> {
   ValueNotifier<Place> selectedData =
-      ValueNotifier(Place("", "", Location(0, 0)));
+      ValueNotifier(Place("", "", Location(0, 0), ""));
   ValueNotifier<List<Place>> routeLocations = ValueNotifier([]);
   late SnappingSheetStatus status;
 

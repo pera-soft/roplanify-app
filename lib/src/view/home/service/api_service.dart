@@ -17,14 +17,23 @@ class ApiService {
     return list;
   }
 
-  Future<OptimizedRoute> optimizeRoute(Route route) async {
+  Future<OptimizedRoute> optimizeRoute(List<Place> routes) async {
+    Route route = Route("DRIVING", routes[0].latLng, routes.getRange(1, routes.length).map((e) {
+      return e.latLng;
+    }).toList(), routes[0].latLng);
+    print(route.toMap());
     var data = await http.post(
         Uri.parse('https://roplanify.ey.r.appspot.com/api/route/optimize'),
+        headers: {
+          "Accept": "application/json",
+          "content-type":"application/json"
+        },
         body: jsonEncode(route.toMap()));
-
+    print(jsonDecode(data.body));
     OptimizedRoute r =
         OptimizedRoute.fromMap(jsonDecode(utf8.decode(data.bodyBytes)));
 
+    print(r.optimizedWaypoints);
     return r;
   }
 }
