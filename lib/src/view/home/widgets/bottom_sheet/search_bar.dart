@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
-import 'package:pera/src/core/components/Icon/search_bar_icon.dart';
 import 'package:pera/src/core/components/sizedbox/custom_sized_box.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
@@ -52,11 +51,7 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
                             opacity: 0.6,
                             child: IconButton(
                               onPressed: _onPressedIconButton,
-                              icon: CustomSearchBarIcon(
-                                color: colors.white,
-                                size: 20,
-                                icon: icons.xmark,
-                              ),
+                              icon: _customSearchBarIcon()
                             ),
                           )
                         : CustomSizedBox()
