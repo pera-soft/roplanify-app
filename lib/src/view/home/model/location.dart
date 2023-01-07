@@ -1,4 +1,4 @@
-class Location{
+class Location {
   final double lat;
   final double lng;
 

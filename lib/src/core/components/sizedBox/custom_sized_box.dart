@@ -4,6 +4,7 @@ class CustomSizedBox extends StatelessWidget {
   double? height;
   double? width;
   Widget? child;
+
   CustomSizedBox({super.key, this.height, this.width, this.child});
 
   @override

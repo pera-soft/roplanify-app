@@ -4,6 +4,7 @@ import '../color/my_colors.dart';
 
 class MyTexts {
   static MyTexts? _instance;
+
   static MyTexts get instance {
     if (_instance != null) {
       return _instance!;
@@ -16,6 +17,7 @@ class MyTexts {
   MyTexts.init();
 
   MyColors get _colors => MyColors.instance;
+
   Color get _textColor => _colors.black;
 
   TextTheme get textTheme => TextTheme(

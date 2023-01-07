@@ -5,6 +5,7 @@ import 'text/my_texts.dart';
 
 class MyTheme extends IMyTheme {
   static MyTheme? _instance;
+
   static MyTheme get instance {
     if (_instance != null) {
       return _instance!;

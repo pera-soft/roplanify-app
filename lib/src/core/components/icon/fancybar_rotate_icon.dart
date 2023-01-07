@@ -4,6 +4,7 @@ class FancyBarIcon extends StatelessWidget {
   final IconData icons;
   final Color color;
   final double size;
+
   const FancyBarIcon({
     Key? key,
     required this.icons,

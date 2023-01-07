@@ -7,7 +7,7 @@ class LocationService {
       Completer<GoogleMapController> gmController, Position position) async {
     CameraPosition cameraPosition = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
-      zoom: 14,
+      zoom: 16,
     );
 
     final GoogleMapController controller = await gmController.future;

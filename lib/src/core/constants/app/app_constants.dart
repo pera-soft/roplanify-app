@@ -1,5 +1,6 @@
 class AppConstants {
   static AppConstants? _instance;
+
   static AppConstants get instance {
     if (_instance != null) {
       return _instance!;
@@ -12,15 +13,25 @@ class AppConstants {
   AppConstants.init();
 
   String get appTitle => "Roplanify";
-  String get duragi_sil => "Durağı Sil";
-  String get Durak_Ekle => 'Durak Ekle';
-  String get Eklendi => "Eklendi";
-  String get Rotayi_Optimize_Et => "Rotayı Optimize Et";
-  String get Durak_eklemek_icin =>
+
+  String get duragiSil => "Durağı Sil";
+
+  String get durakEkle => 'Durak Ekle';
+
+  String get eklendi => "Eklendi";
+
+  String get rotayiOptimizeEt => "Rotayı Optimize Et";
+
+  String get durakEklemekIcin =>
       "Durak eklemek için üst kısımdaki arama çubuğunu kullanın";
-  String get aracta_yer_elirleyin => "Araçta Yer Belirleyin";
-  String get not_ekle => "Not Ekle";
+
+  String get aractaYerBelirleyin => "Araçta Yer Belirleyin";
+
+  String get notEkle => "Not Ekle";
+
   bool get debugShowCheckedModeBanner => false;
+
   double get deviceHeight => 0.0;
+
   double get mapHeight => 0.0;
 }

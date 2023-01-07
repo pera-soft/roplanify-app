@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:pera/src/view/home/model/location.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
-import 'package:pera/src/view/home/model/route.dart';
+import 'package:pera/src/view/home/model/routes.dart';
+import 'package:pera/src/view/home/service/location_service.dart';
 
 class ApiService {
   Future<List> searchPlace(String text) async {
@@ -18,22 +22,30 @@ class ApiService {
   }
 
   Future<OptimizedRoute> optimizeRoute(List<Place> routes) async {
-    Route route = Route("DRIVING", routes[0].latLng, routes.getRange(1, routes.length).map((e) {
-      return e.latLng;
-    }).toList(), routes[0].latLng);
-    print(route.toMap());
+    LocationService ls = LocationService();
+    Position currentLocation = await ls.getCurrentLocation();
+    Location currentPosition =
+        Location(currentLocation.latitude, currentLocation.longitude);
+
+    Routes route = Routes(
+        "DRIVING",
+        currentPosition,
+        routes.map((e) {
+          return e.latLng;
+        }).toList(),
+        currentPosition);
+
     var data = await http.post(
         Uri.parse('https://roplanify.ey.r.appspot.com/api/route/optimize'),
         headers: {
           "Accept": "application/json",
-          "content-type":"application/json"
+          "content-type": "application/json"
         },
         body: jsonEncode(route.toMap()));
-    print(jsonDecode(data.body));
-    OptimizedRoute r =
+
+    OptimizedRoute optimizedRoute =
         OptimizedRoute.fromMap(jsonDecode(utf8.decode(data.bodyBytes)));
 
-    print(r.optimizedWaypoints);
-    return r;
+    return optimizedRoute;
   }
 }

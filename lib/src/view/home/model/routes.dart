@@ -1,14 +1,14 @@
 import 'package:pera/src/view/home/model/location.dart';
 
-class Route {
+class Routes {
   final String travelMode;
   final Location origin;
   final List<Location> waypoints;
   final Location destination;
 
-  Route(this.travelMode, this.origin, this.waypoints, this.destination);
+  Routes(this.travelMode, this.origin, this.waypoints, this.destination);
 
-  Route.fromMap(Map<String, dynamic> map)
+  Routes.fromMap(Map<String, dynamic> map)
       : travelMode = map['travelMode'],
         origin = Location.fromMap(map['origin']),
         waypoints = ((map['waypoints'] as List)

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 class SearchResultListTile extends StatelessWidget {
   final Widget title, subtitle, trailing, leading;
-  final VoidCallback ontop;
+  final VoidCallback onTap;
+
   const SearchResultListTile(
       {super.key,
       required this.title,
       required this.subtitle,
       required this.trailing,
       required this.leading,
-      required this.ontop});
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class SearchResultListTile extends StatelessWidget {
       subtitle: subtitle,
       trailing: trailing,
       leading: leading,
-      onTap: ontop,
+      onTap: onTap,
     );
   }
 }
