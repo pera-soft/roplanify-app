@@ -51,7 +51,7 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
                             opacity: 0.6,
                             child: IconButton(
                               onPressed: _onPressedIconButton,
-                              icon: _customSearchBarIcon()
+                              icon: _searchBarVisibilityClearIcon(),
                             ),
                           )
                         : CustomSizedBox()
@@ -148,6 +148,14 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
           ),
         ),
       ),
+    );
+  }
+  
+  Icon _searchBarVisibilityClearIcon() {
+    return Icon(
+      icons.xmark,
+      color: colors.white,
+      size: 20,
     );
   }
 
