@@ -12,7 +12,13 @@ class AppConstants {
 
   AppConstants.init();
 
-  String get appTitle => "Roplanify";
+  String get apple => "Apple ile devam et";
+
+  String get google => "Google ile devam et";
+
+  String get slogan => "Teslimat sürücüleri için çok duraklı planlayıcı";
+
+  String get appTitle => "roplanify";
 
   String get duragiSil => "Durağı Sil";
 
