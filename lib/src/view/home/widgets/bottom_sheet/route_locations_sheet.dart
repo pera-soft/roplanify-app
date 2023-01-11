@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
-import 'package:pera/src/view/home/model/routes.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
 
 class RouteLocationsSheet extends StatefulWidget {
@@ -47,8 +46,9 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 5,
-        onPressed: () async{
-          OptimizedRoute or = await apiService.optimizeRoute(widget.routeLocations.value);
+        onPressed: () async {
+          OptimizedRoute or =
+              await apiService.optimizeRoute(widget.routeLocations.value);
           widget.optimizedRoutes.value = or;
         },
         color: colors.blue,
@@ -95,12 +95,13 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     return Container(
       padding: const EdgeInsets.all(50),
       child: Center(
-          child: Text(
-        constants.durakEklemekIcin,
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 20, color: colors.grey),
-        textAlign: TextAlign.center,
-      )),
+        child: Text(
+          constants.durakEklemekIcin,
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
