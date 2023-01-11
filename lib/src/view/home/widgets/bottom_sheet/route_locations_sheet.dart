@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
@@ -59,10 +60,8 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
           });
         },
         color: colors.blue,
-        child: Text(
-          constants.rotayiOptimizeEt,
-          style: TextStyle(color: colors.white),
-        ),
+        child: TextStyleGenerator(
+            text: constants.rotayiOptimizeEt, color: colors.white),
       ),
     );
   }

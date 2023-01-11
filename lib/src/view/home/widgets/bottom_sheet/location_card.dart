@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/sizedbox/custom_sized_box.dart';
+import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
 import 'package:pera/src/view/home/model/place.dart';
 
 class LocationCard extends StatelessWidget with BaseSingleton {
@@ -83,21 +84,20 @@ class LocationCard extends StatelessWidget with BaseSingleton {
     return ListTile(
       title: Padding(
         padding: const EdgeInsets.only(bottom: 5.0),
-        child: Text(
-          data.value!.name,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-        ),
+        child: TextStyleGenerator(
+            text: data.value!.name,
+            maxLine: 2,
+            overflow: TextOverflow.ellipsis,
+            fontWeight: FontWeight.bold,
+            fontSize: 22),
       ),
       subtitle: Padding(
         padding: const EdgeInsets.only(bottom: 10.0),
-        child: Text(
-          data.value!.formattedAddress,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 18),
-        ),
+        child: TextStyleGenerator(
+            text: data.value!.formattedAddress,
+            maxLine: 2,
+            overflow: TextOverflow.ellipsis,
+            fontSize: 18),
       ),
     );
   }
@@ -127,10 +127,7 @@ class LocationCard extends StatelessWidget with BaseSingleton {
                 size: 15,
               ),
               const SizedBox(width: 5),
-              Text(
-                constants.eklendi,
-                style: TextStyle(color: colors.green8),
-              )
+              TextStyleGenerator(text: constants.eklendi, color: colors.green8)
             ],
           ),
         )

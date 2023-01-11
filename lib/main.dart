@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
-import 'package:pera/src/view/login/login_view.dart';
+import 'package:pera/src/view/login/view/login_view.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 

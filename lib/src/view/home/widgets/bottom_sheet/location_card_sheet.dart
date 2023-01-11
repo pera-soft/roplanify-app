@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/location_card.dart';
@@ -52,10 +53,8 @@ class _LocationCardSheetState extends State<LocationCardSheet>
           widget.routeLocations.value.remove(widget.selectedData.value);
         },
         color: colors.red,
-        child: Text(
-          constants.duragiSil,
-          style: TextStyle(color: colors.white),
-        ),
+        child:
+            TextStyleGenerator(text: constants.duragiSil, color: colors.white),
       ),
     );
   }

@@ -137,9 +137,8 @@ class _HomeState extends State<Home> {
   }
 
   Future<Uint8List> getBytesFromAsset(int i) async {
-    String path = i == 0
-        ? "lib/src/assets/images/flag.png"
-        : "lib/src/assets/images/number-$i.png";
+    String path =
+        i == 0 ? "assets/images/flag.png" : "assets/images/number-$i.png";
 
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
