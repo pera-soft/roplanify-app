@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
-import 'package:pera/src/view/home/model/routes.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
 
 class RouteLocationsSheet extends StatefulWidget {

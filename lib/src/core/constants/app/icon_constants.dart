@@ -15,6 +15,8 @@ class IconConstants {
 
   IconConstants.init();
 
+  IconData get logo => FontAwesomeIcons.locationDot;
+
   IconData get navigation => Icons.navigation;
 
   IconData get addLocationOutlined => Icons.add_location_outlined;

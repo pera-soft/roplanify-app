@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
-import 'package:pera/src/view/home/model/routes.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/location_card_sheet.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/route_locations_sheet.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/search_result_sheet.dart';
