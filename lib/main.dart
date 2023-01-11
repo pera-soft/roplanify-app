@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/view/home/home_view.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
+
   runApp(const MyApp());
 }
 
