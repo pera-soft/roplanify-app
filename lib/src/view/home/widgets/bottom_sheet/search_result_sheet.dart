@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/Listtile/search_result_listtile.dart';
+import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
@@ -51,7 +52,7 @@ class SearchResultSheet extends StatelessWidget with BaseSingleton {
   Center _centerCircularProgress() {
     return const Center(child: Padding(
       padding: EdgeInsets.all(10.0),
-      child: CircularProgressIndicator(),
+      child: CircularProgress(),
     ));
   }
 

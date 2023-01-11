@@ -29,6 +29,8 @@ class AppConstants {
 
   String get notEkle => "Not Ekle";
 
+  String get rotaOptimizeEdiliyor => "Rota Optimize Ediliyor";
+
   bool get debugShowCheckedModeBanner => false;
 
   double get deviceHeight => 0.0;
