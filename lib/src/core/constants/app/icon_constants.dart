@@ -31,5 +31,7 @@ class IconConstants {
 
   IconData get angleRight => FontAwesomeIcons.angleRight;
 
+  IconData get logOut => Icons.power_settings_new;
+
   IconData get truck => FontAwesomeIcons.truck;
 }

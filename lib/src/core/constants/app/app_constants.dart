@@ -16,6 +16,8 @@ class AppConstants {
 
   String get google => "Google ile devam et";
 
+  String get oturumAciliyor => "Oturum Açılıyor...";
+
   String get slogan => "Teslimat sürücüleri için çok duraklı planlayıcı";
 
   String get appTitle => "roplanify";
