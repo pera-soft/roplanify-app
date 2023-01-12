@@ -5,22 +5,31 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
+import 'package:pera/src/core/extensions/ui_extensions.dart';
 import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/service/location_service.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/view/home/widgets/top_section.dart';
 import 'dart:ui' as ui;
+import 'package:pera/src/view/login/model/user.dart';
+import 'package:pera/src/view/login/service/auth_service.dart';
+import 'package:pera/src/view/login/view/login_view.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final ValueNotifier<AppUser?> user;
+
+  const Home({Key? key, required this.user}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with BaseSingleton {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final Completer<GoogleMapController> _controller = Completer();
+  final AuthService authService = AuthService();
   ValueNotifier<OptimizedRoute?> routes = ValueNotifier(null);
   Set<Marker> markers = {};
   LocationService ls = LocationService();
@@ -73,7 +82,69 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Drawer _drawer() => const Drawer();
+  Drawer _drawer() {
+    AppUser user = widget.user.value!;
+
+    return Drawer(
+      child: Container(
+        padding: context.paddingHorizontal2x,
+        decoration: BoxDecoration(
+            color: colors.white, boxShadow: [BoxShadow(color: colors.black45)]),
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(
+                  icons.logOut,
+                  color: colors.black,
+                ),
+                onPressed: () async {
+                  authService.signOut();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              LoginPage(appUser: widget.user)));
+                },
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    height: 75,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                            colors: [colors.blue, Colors.blueAccent])),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: (user.picsUrl.isEmpty)
+                          ? const AssetImage("assets/images/placeholder.png")
+                          : NetworkImage(user.picsUrl) as ImageProvider,
+                    ),
+                  ),
+                  SizedBox(
+                      width: 100,
+                      child: TextStyleGenerator(
+                        text: user.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        color: colors.black,
+                        fontSize: 20.0,
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   TopSection _topSection() {
     return TopSection(

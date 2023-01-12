@@ -150,7 +150,7 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
       ),
     );
   }
-  
+
   Icon _searchBarVisibilityClearIcon() {
     return Icon(
       icons.xmark,

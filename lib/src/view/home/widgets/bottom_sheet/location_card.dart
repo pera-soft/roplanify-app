@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/sizedbox/custom_sized_box.dart';
-import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
+import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/view/home/model/place.dart';
 
 class LocationCard extends StatelessWidget with BaseSingleton {
@@ -86,7 +86,7 @@ class LocationCard extends StatelessWidget with BaseSingleton {
         padding: const EdgeInsets.only(bottom: 5.0),
         child: TextStyleGenerator(
             text: data.value!.name,
-            maxLine: 2,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.bold,
             fontSize: 22),
@@ -95,7 +95,7 @@ class LocationCard extends StatelessWidget with BaseSingleton {
         padding: const EdgeInsets.only(bottom: 10.0),
         child: TextStyleGenerator(
             text: data.value!.formattedAddress,
-            maxLine: 2,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             fontSize: 18),
       ),

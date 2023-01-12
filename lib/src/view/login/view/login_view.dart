@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
+import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
 import 'package:pera/src/core/components/sizedBox/custom_sized_box.dart';
-import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
+import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
+import 'package:pera/src/core/constants/enums/login_type.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
 import 'package:pera/src/view/home/home_view.dart';
+import 'package:pera/src/view/login/model/user.dart';
+import 'package:pera/src/view/login/service/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final ValueNotifier<AppUser?> appUser;
+
+  const LoginPage({Key? key, required this.appUser}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> with BaseSingleton {
+  final AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: context.padding5x,
-        decoration: _boxdecoration(),
+        decoration: _boxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,11 +42,13 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
   Column _bottomButtonColumn() {
     return Column(
       children: <Widget>[
-        socialLoginButton("assets/images/google.png", constants.google),
+        socialLoginButton(
+            "assets/images/google.png", constants.google, LoginType.google),
         CustomSizedBox(
           height: 15,
         ),
-        socialLoginButton("assets/images/apple.png", constants.apple)
+        socialLoginButton(
+            "assets/images/apple.png", constants.apple, LoginType.google)
       ],
     );
   }
@@ -59,13 +69,13 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
           CustomSizedBox(
             height: 20,
           ),
-          _textsubTitle(),
+          _textSubtitle(),
         ],
       ),
     );
   }
 
-  TextStyleGenerator _textsubTitle() {
+  TextStyleGenerator _textSubtitle() {
     return TextStyleGenerator(
       text: constants.slogan,
       alignment: TextAlign.center,
@@ -87,7 +97,7 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
     );
   }
 
-  BoxDecoration _boxdecoration() {
+  BoxDecoration _boxDecoration() {
     return BoxDecoration(image: _backgroundImage());
   }
 
@@ -96,15 +106,41 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
         image: AssetImage("assets/images/background.jpg"), fit: BoxFit.cover);
   }
 
-  socialLoginButton(String path, String title) {
+  socialLoginButton(String path, String title, LoginType type) {
     return MaterialButton(
       color: colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
       padding: context.paddingVertical2x,
       onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const Home()));
+        switch (type) {
+          case LoginType.google:
+            dialog();
+            authService.signInWithGoogle().then((user) {
+              Navigator.pop(context);
+              if (user != null) {
+                widget.appUser.value = user;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Home(user: widget.appUser)));
+              }
+            });
+            break;
+          case LoginType.apple:
+            dialog();
+            authService.signInWithApple().then((user) {
+              Navigator.pop(context);
+              if (user != null) {
+                widget.appUser.value = user;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Home(user: widget.appUser)));
+              }
+            });
+            break;
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -121,5 +157,31 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
         ],
       ),
     );
+  }
+
+  dialogMessage(String message) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text(message),
+          );
+        });
+  }
+
+  dialog() async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            content: Container(
+                height: 50,
+                alignment: Alignment.center,
+                child: const CircularProgress()),
+            title: Text(constants.oturumAciliyor),
+          );
+        });
   }
 }
