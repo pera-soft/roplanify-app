@@ -17,7 +17,7 @@ class AppConstants {
   String get google => "Google ile devam et";
 
   String get oturumAciliyor => "Oturum Açılıyor...";
-
+  
   String get slogan => "Verimliliğe giden rota oluşturuluyor";
 
   String get appTitle => "roplanify";
