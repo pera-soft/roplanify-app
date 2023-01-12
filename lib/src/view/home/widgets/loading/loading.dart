@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
-import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
+import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
 
 class LoadingPopup extends StatefulWidget {

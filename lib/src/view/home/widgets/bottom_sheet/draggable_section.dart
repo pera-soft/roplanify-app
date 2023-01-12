@@ -13,10 +13,12 @@ class DraggableSection extends StatefulWidget {
   final ValueNotifier<String> searchText;
   final ValueNotifier<OptimizedRoute?> routes;
 
-  const DraggableSection({super.key,
-    required this.controller,
-    required this.searchText,
-    required this.status, required this.routes});
+  const DraggableSection(
+      {super.key,
+      required this.controller,
+      required this.searchText,
+      required this.status,
+      required this.routes});
 
   @override
   State<DraggableSection> createState() => _DraggableSectionState();
@@ -24,7 +26,6 @@ class DraggableSection extends StatefulWidget {
 
 class _DraggableSectionState extends State<DraggableSection>
     with BaseSingleton {
-
   ValueNotifier<Place?> selectedData = ValueNotifier(null);
   ValueNotifier<List<Place>> routeLocations = ValueNotifier([]);
 
@@ -48,8 +49,8 @@ class _DraggableSectionState extends State<DraggableSection>
       child: status == SnappingSheetStatus.search
           ? _searchResultSheet()
           : status == SnappingSheetStatus.locations
-          ? _routeLocationSheet()
-          : _locationCardSheet(),
+              ? _routeLocationSheet()
+              : _locationCardSheet(),
     );
   }
 
@@ -85,5 +86,4 @@ class _DraggableSectionState extends State<DraggableSection>
       ],
     );
   }
-
 }

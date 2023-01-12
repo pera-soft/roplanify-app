@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/Listtile/search_result_listtile.dart';
 import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
-import 'package:pera/src/core/components/text/text_withgooglefonts_widet.dart';
+import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
@@ -63,12 +63,12 @@ class SearchResultSheet extends StatelessWidget with BaseSingleton {
       leading: const Icon(Icons.add_location_outlined, size: 30),
       title: TextStyleGenerator(
         text: data.name,
-        maxLine: 1,
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: TextStyleGenerator(
           text: data.formattedAddress,
-          maxLine: 1,
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
           color: colors.grey),
       trailing: Icon(icons.angleRight),
