@@ -18,7 +18,7 @@ class AppConstants {
 
   String get oturumAciliyor => "Oturum Açılıyor...";
 
-  String get slogan => "Teslimat sürücüleri için çok duraklı planlayıcı";
+  String get slogan => "Verimliliğe giden rota oluşturuluyor";
 
   String get appTitle => "roplanify";
 
