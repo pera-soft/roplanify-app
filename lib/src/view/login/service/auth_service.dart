@@ -95,5 +95,6 @@ class AuthService {
 
   signOut() async {
     await _auth.signOut();
+    await _googleAuth.disconnect();
   }
 }
