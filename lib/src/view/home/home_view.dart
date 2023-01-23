@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
-import 'package:pera/src/view/home/model/optimized_route.dart';
+import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/location_service.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/view/home/widgets/top_section.dart';
@@ -30,8 +30,9 @@ class _HomeState extends State<Home> with BaseSingleton {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final Completer<GoogleMapController> _controller = Completer();
   final AuthService authService = AuthService();
-  ValueNotifier<OptimizedRoute?> routes = ValueNotifier(null);
+  ValueNotifier<List<Place>?> routes = ValueNotifier(null);
   Set<Marker> markers = {};
+  ValueNotifier<Set<Polyline>> polylines = ValueNotifier({});
   LocationService ls = LocationService();
   double deviceHeight = 0.0;
   double mapHeight = 0.0;
@@ -75,7 +76,9 @@ class _HomeState extends State<Home> with BaseSingleton {
             _sizedBoxMap(),
             _topSection(),
             SnappingSheetWidget(
-                mapHeightCallback: setMapHeight, routes: routes),
+                mapHeightCallback: setMapHeight,
+                routes: routes,
+                polylines: polylines),
           ],
         ),
       ),
@@ -162,6 +165,7 @@ class _HomeState extends State<Home> with BaseSingleton {
 
   GoogleMap _googleMap() {
     return GoogleMap(
+      polylines: polylines.value,
       mapType: MapType.terrain,
       initialCameraPosition: _kIstanbul,
       onMapCreated: (GoogleMapController controller) {
@@ -179,12 +183,12 @@ class _HomeState extends State<Home> with BaseSingleton {
     );
   }
 
-  void updateMarkers(OptimizedRoute? value) async {
+  void updateMarkers(List<Place>? value) async {
     Set<Marker> newMarkers = {};
 
     if (value != null) {
-      for (int i = 0; i < value.optimizedWaypoints.length - 1; i++) {
-        var element = value.optimizedWaypoints[i];
+      for (int i = 0; i < value.length - 1; i++) {
+        var element = value[i];
         final MarkerId markerId = MarkerId("marker${element.hashCode}");
 
         Uint8List customMarker = await getBytesFromAsset(i);
@@ -192,8 +196,8 @@ class _HomeState extends State<Home> with BaseSingleton {
         final Marker marker = Marker(
           markerId: markerId,
           position: LatLng(
-            element.lat,
-            element.lng,
+            element.latLng.lat,
+            element.latLng.lng,
           ),
           icon: BitmapDescriptor.fromBytes(customMarker),
         );
