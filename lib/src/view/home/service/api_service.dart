@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:pera/src/view/home/model/location.dart';
-import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/model/routes.dart';
 import 'package:pera/src/view/home/service/location_service.dart';
@@ -20,7 +19,7 @@ class ApiService {
     return list;
   }
 
-  Future<OptimizedRoute> optimizeRoute(List<Place> routes) async {
+  Future<List<Place>> optimizeRoute(List<Place> routes) async {
     LocationService ls = LocationService();
     Position currentLocation = await ls.getCurrentLocation();
     Location currentPosition =
@@ -42,8 +41,13 @@ class ApiService {
         },
         body: jsonEncode(route.toMap()));
 
-    OptimizedRoute optimizedRoute =
-        OptimizedRoute.fromMap(jsonDecode(utf8.decode(data.bodyBytes)));
+    /*OptimizedRoute optimizedRoute =
+        OptimizedRoute.fromMap(jsonDecode(utf8.decode(data.bodyBytes)));*/
+
+    List<Place> optimizedRoute =
+        (jsonDecode(utf8.decode(data.bodyBytes)) as List)
+            .map((e) => Place.fromMap(e))
+            .toList();
 
     return optimizedRoute;
   }

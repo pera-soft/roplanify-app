@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
-import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/api_service.dart';
+import 'package:pera/src/view/home/service/route_service.dart';
 import 'package:pera/src/view/home/widgets/loading/loading.dart';
 
 class RouteLocationsSheet extends StatefulWidget {
   final ScrollController scrollController;
   final ValueNotifier<List<Place>> routeLocations;
-  final ValueNotifier<OptimizedRoute?> optimizedRoutes;
+  final ValueNotifier<List<Place>?> optimizedRoutes;
+  final ValueNotifier<Set<Polyline>?> polylines;
 
   const RouteLocationsSheet(
       {Key? key,
       required this.scrollController,
       required this.routeLocations,
-      required this.optimizedRoutes})
+      required this.optimizedRoutes,
+      required this.polylines})
       : super(key: key);
 
   @override
@@ -25,6 +28,7 @@ class RouteLocationsSheet extends StatefulWidget {
 class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     with BaseSingleton {
   ApiService apiService = ApiService();
+  final GoogleMapsServices _googleMapsServices = GoogleMapsServices();
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +59,10 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
         onPressed: () async {
           await showLoadingDialog();
           apiService.optimizeRoute(widget.routeLocations.value).then((value) {
-            widget.optimizedRoutes.value = value;
-            Navigator.pop(context);
+            widget.routeLocations.value = value;
           });
+
+          sendRequest();
         },
         color: colors.blue,
         child: TextStyleGenerator(
@@ -154,5 +159,73 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
         builder: (BuildContext context) {
           return const LoadingPopup();
         });
+  }
+
+  List<LatLng> _convertToLatLng(List points) {
+    List<LatLng> result = <LatLng>[];
+    for (int i = 0; i < points.length; i++) {
+      if (i % 2 != 0) {
+        result.add(LatLng(points[i - 1], points[i]));
+      }
+    }
+    return result;
+  }
+
+  void sendRequest() async {
+    widget.polylines.value = {};
+    List<String> routes = [];
+
+    for (int i = 0; i < widget.optimizedRoutes.value!.length - 1; i++) {
+      Place destination = widget.optimizedRoutes.value![i + 1];
+      Place start = widget.optimizedRoutes.value![i];
+      String route = await _googleMapsServices.getRouteCoordinates(
+          start.latLng, destination.latLng);
+      routes.add(route);
+    }
+    createRoute(routes);
+  }
+
+  void createRoute(List<String> encondedPolies) {
+    for (var element in encondedPolies) {
+      widget.polylines.value!.add(Polyline(
+          polylineId: PolylineId("${element.hashCode}"),
+          width: 4,
+          points: _convertToLatLng(_decodePoly(element)),
+          color: colors.blueAccent));
+    }
+
+    Navigator.pop(context);
+  }
+
+  List _decodePoly(String poly) {
+    var list = poly.codeUnits;
+    var lList = [];
+    int index = 0;
+    int len = poly.length;
+    int c = 0;
+    do {
+      var shift = 0;
+      int result = 0;
+
+      do {
+        c = list[index] - 63;
+        result |= (c & 0x1F) << (shift * 5);
+        index++;
+        shift++;
+      } while (c >= 32);
+      if (result & 1 == 1) {
+        result = ~result;
+      }
+      var result1 = (result >> 1) * 0.00001;
+      lList.add(result1);
+    } while (index < len);
+
+    for (var i = 2; i < lList.length; i++) {
+      lList[i] += lList[i - 2];
+    }
+
+    print(lList.toString());
+
+    return lList;
   }
 }

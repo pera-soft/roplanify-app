@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
-import 'package:pera/src/view/home/model/optimized_route.dart';
+import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/draggable_section.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/search_bar.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SnappingSheetWidget extends StatefulWidget {
   final ValueChanged<double> mapHeightCallback;
-  final ValueNotifier<OptimizedRoute?> routes;
+  final ValueNotifier<List<Place>?> routes;
+  final ValueNotifier<Set<Polyline>?> polylines;
 
   const SnappingSheetWidget(
-      {super.key, required this.mapHeightCallback, required this.routes});
+      {super.key,
+      required this.mapHeightCallback,
+      required this.routes,
+      required this.polylines});
 
   @override
   State<SnappingSheetWidget> createState() => _SnappingSheetWidgetState();
@@ -73,7 +78,8 @@ class _SnappingSheetWidgetState extends State<SnappingSheetWidget>
           controller: listViewController,
           searchText: searchText,
           status: status,
-          routes: widget.routes),
+          routes: widget.routes,
+          polylines: widget.polylines),
     );
   }
 

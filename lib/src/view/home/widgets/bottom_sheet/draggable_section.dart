@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
-import 'package:pera/src/view/home/model/optimized_route.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/location_card_sheet.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/route_locations_sheet.dart';
@@ -9,16 +9,18 @@ import 'package:pera/src/view/home/widgets/bottom_sheet/search_result_sheet.dart
 
 class DraggableSection extends StatefulWidget {
   final ValueNotifier<SnappingSheetStatus> status;
+  final ValueNotifier<Set<Polyline>?> polylines;
   final ScrollController controller;
   final ValueNotifier<String> searchText;
-  final ValueNotifier<OptimizedRoute?> routes;
+  final ValueNotifier<List<Place>?> routes;
 
   const DraggableSection(
       {super.key,
       required this.controller,
       required this.searchText,
       required this.status,
-      required this.routes});
+      required this.routes,
+      required this.polylines});
 
   @override
   State<DraggableSection> createState() => _DraggableSectionState();
@@ -66,7 +68,8 @@ class _DraggableSectionState extends State<DraggableSection>
     return RouteLocationsSheet(
         scrollController: widget.controller,
         routeLocations: routeLocations,
-        optimizedRoutes: widget.routes);
+        optimizedRoutes: widget.routes,
+        polylines: widget.polylines);
   }
 
   SearchResultSheet _searchResultSheet() {
