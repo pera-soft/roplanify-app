@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pera/src/view/splash/view/splash.dart';
+import 'package:pera/src/core/route/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,9 @@ void main() async {
 
 class MyApp extends StatelessWidget with BaseSingleton {
   MyApp({super.key});
+
   final _appRouter = AppRouter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

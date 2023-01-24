@@ -7,7 +7,6 @@ import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart'
 import 'package:pera/src/core/constants/enums/login_type.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
 import 'package:pera/src/core/route/app_router.dart';
-import 'package:pera/src/view/home/home_view.dart';
 import 'package:pera/src/view/login/model/user.dart';
 import 'package:pera/src/view/login/service/auth_service.dart';
 

@@ -17,7 +17,6 @@ import 'package:pera/src/view/home/widgets/top_section.dart';
 import 'dart:ui' as ui;
 import 'package:pera/src/view/login/model/user.dart';
 import 'package:pera/src/view/login/service/auth_service.dart';
-import 'package:pera/src/view/login/view/login_view.dart';
 
 class Home extends StatefulWidget {
   final ValueNotifier<AppUser?> user;
