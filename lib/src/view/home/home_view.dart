@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
+import 'package:pera/src/core/route/app_router.dart';
 import 'package:pera/src/view/home/model/place.dart';
 import 'package:pera/src/view/home/service/location_service.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
@@ -104,11 +106,7 @@ class _HomeState extends State<Home> with BaseSingleton {
                 ),
                 onPressed: () async {
                   authService.signOut();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LoginPage(appUser: widget.user)));
+                  context.router.replace(LoginRoute(appUser: widget.user));
                 },
               ),
             ),
