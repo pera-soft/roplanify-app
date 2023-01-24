@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
@@ -5,6 +6,7 @@ import 'package:pera/src/core/components/sizedBox/custom_sized_box.dart';
 import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
 import 'package:pera/src/core/constants/enums/login_type.dart';
 import 'package:pera/src/core/extensions/ui_extensions.dart';
+import 'package:pera/src/core/route/app_router.dart';
 import 'package:pera/src/view/home/home_view.dart';
 import 'package:pera/src/view/login/model/user.dart';
 import 'package:pera/src/view/login/service/auth_service.dart';
@@ -120,10 +122,7 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
               Navigator.pop(context);
               if (user != null) {
                 widget.appUser.value = user;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => Home(user: widget.appUser)));
+                context.router.navigate(HomePage(user: widget.appUser));
               }
             });
             break;
@@ -133,10 +132,7 @@ class _LoginPageState extends State<LoginPage> with BaseSingleton {
               Navigator.pop(context);
               if (user != null) {
                 widget.appUser.value = user;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => Home(user: widget.appUser)));
+                context.router.navigate(HomePage(user: widget.appUser));
               }
             });
             break;

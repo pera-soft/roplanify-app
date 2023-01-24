@@ -14,11 +14,12 @@ void main() async {
 
 class MyApp extends StatelessWidget with BaseSingleton {
   MyApp({super.key});
-
+  final _appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const SplashScreen(),
+    return MaterialApp.router(
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
       title: constants.appTitle,
       debugShowCheckedModeBanner: constants.debugShowCheckedModeBanner,
       theme: ThemeData(primaryColor: colors.blue),

@@ -1,13 +1,13 @@
 import 'dart:async';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/circularProgressIndicator/circular_progress_indicator.dart';
 import 'package:pera/src/core/components/sizedBox/custom_sized_box.dart';
 import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart';
-import 'package:pera/src/view/home/home_view.dart';
+import 'package:pera/src/core/route/app_router.dart';
 import 'package:pera/src/view/login/model/user.dart';
 import 'package:pera/src/view/login/service/auth_service.dart';
-import 'package:pera/src/view/login/view/login_view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -58,11 +58,9 @@ class _SplashScreenState extends State<SplashScreen> with BaseSingleton {
       Timer(const Duration(seconds: 3), () {
         if (currentUser != null) {
           user.value = currentUser;
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Home(user: user)));
+          context.router.navigate(HomePage(user: user));
         } else {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => LoginPage(appUser: user)));
+          context.router.navigate(LoginRoute(appUser: user));
         }
       });
     });

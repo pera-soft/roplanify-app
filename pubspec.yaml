@@ -51,10 +51,13 @@ dependencies:
   sign_in_with_apple: ^3.0.0
   crypto: ^3.0.1
 
+  auto_route:  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  auto_route_generator:             
+  build_runner:  
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
