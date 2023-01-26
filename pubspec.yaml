@@ -51,6 +51,9 @@ dependencies:
   sign_in_with_apple: ^3.0.0
   crypto: ^3.0.1
   auto_route:
+  map_launcher: ^2.4.0
+  url_launcher: ^6.1.8
+  android_intent_plus: ^3.1.5
 
 dev_dependencies:
   flutter_test:

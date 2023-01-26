@@ -1,3 +1,4 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
@@ -38,9 +39,9 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
             controller: widget.scrollController,
             child: widget.routeLocations.value.isEmpty
                 ? _customContainer()
-                /*: widget.optimizedRoutes.value != null
-                    ? _customRouteListView()*/
-                : _customListViewBuilder()),
+                : widget.optimizedRoutes.value != null
+                    ? _customRouteListView()
+                    : _customListViewBuilder()),
         widget.routeLocations.value.isEmpty
             ? Container()
             : _customContainerButton()
@@ -58,11 +59,10 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
         elevation: 5,
         onPressed: () async {
           await showLoadingDialog();
-          apiService.optimizeRoute(widget.routeLocations.value).then((value) {
-            widget.routeLocations.value = value;
-          });
-
-          sendRequest();
+          List<Place> optimize =
+              await apiService.optimizeRoute(widget.routeLocations.value);
+          widget.optimizedRoutes.value = optimize;
+          await sendRequest();
         },
         color: colors.blue,
         child: TextStyleGenerator(
@@ -71,24 +71,13 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     );
   }
 
-  /*ListView _customRouteListView() {
-    List<Place> or = [];
-    for (var routeItem in widget.optimizedRoutes.value!.optimizedWaypoints) {
-      Iterable places = widget.routeLocations.value.where((locationItem) {
-        return locationItem.latLng.lng == routeItem.lng &&
-            locationItem.latLng.lat == routeItem.lat;
-      });
-      if (places.isNotEmpty) {
-        or.add(places.first);
-      }
-    }
-
+  ListView _customRouteListView() {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: or.length,
+        itemCount: widget.optimizedRoutes.value!.length,
         itemBuilder: (BuildContext context, int index) {
-          Place data = or[index];
+          Place data = widget.optimizedRoutes.value![index];
 
           return ListTile(
             leading: Text("${index + 1}"),
@@ -103,10 +92,12 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
               overflow: TextOverflow.ellipsis,
               style: TextStyle(color: colors.grey),
             ),
-            onTap: () {},
+            onTap: () {
+              openMapsForAndroid(data.latLng.lat, data.latLng.lng);
+            },
           );
         });
-  }*/
+  }
 
   ListView _customListViewBuilder() {
     return ListView.builder(
@@ -134,7 +125,9 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
               style: TextStyle(color: colors.grey),
             ),
             trailing: Icon(icons.angleRight),
-            onTap: () {},
+            onTap: () {
+              openMapsForAndroid(data.latLng.lat, data.latLng.lng);
+            },
           );
         });
   }
@@ -171,7 +164,7 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
     return result;
   }
 
-  void sendRequest() async {
+  Future sendRequest() async {
     widget.polylines.value = {};
     List<String> routes = [];
 
@@ -186,15 +179,46 @@ class _RouteLocationsSheetState extends State<RouteLocationsSheet>
   }
 
   void createRoute(List<String> encondedPolies) {
-    for (var element in encondedPolies) {
+    List<Color> colorList = [
+      colors.blue,
+      colors.red,
+      colors.green,
+      colors.purple
+    ];
+
+    for (int i = 0; i < encondedPolies.length; i++) {
       widget.polylines.value!.add(Polyline(
-          polylineId: PolylineId("${element.hashCode}"),
+          polylineId: PolylineId("${encondedPolies[i].hashCode}"),
           width: 4,
-          points: _convertToLatLng(_decodePoly(element)),
-          color: colors.blueAccent));
+          points: _convertToLatLng(_decodePoly(encondedPolies[i])),
+          color: colorList[i % 4]));
     }
 
     Navigator.pop(context);
+  }
+
+  void openMapsForIos(double destinationLat, double destinationLng) async {}
+
+  void openMapsForAndroid(double destinationLat, double destinationLng) async {
+    // final availableMaps = await MapLauncher.installedMaps;
+    //
+    // await availableMaps.first
+    //     .showDirections(destination: Coords(destinationLat, destinationLng));
+
+    // String googleUrl =
+    //     'https://www.google.com/maps/search/?api=1&query=$destinationLat,$destinationLng';
+    // if (await canLaunchUrl(Uri.parse(googleUrl))) {
+    //   await launchUrl(Uri.parse(googleUrl));
+    // } else {
+    //   throw 'Could not open the map.';
+    // }
+
+    final intent = AndroidIntent(
+        action: 'action_view',
+        data: Uri.encodeFull(
+            "google.navigation:q=$destinationLat,$destinationLng&avoid=tf"),
+        package: 'com.google.android.apps.maps');
+    intent.launch();
   }
 
   List _decodePoly(String poly) {
