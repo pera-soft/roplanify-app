@@ -1,8 +1,10 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/sizedbox/custom_sized_box.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class SearchBar extends StatefulWidget {
   final SnappingSheetController draggableController;
@@ -22,7 +24,16 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> with BaseSingleton {
+  SpeechToText speechtotext = SpeechToText();
+  String _text = 'Press the button and start speaking';
+  bool _isListening = false;
   bool clearButtonVisibility = false;
+
+  void listen() {}
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +89,51 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
 
   Opacity _opacity() {
     return Opacity(
-        opacity: 0.6, child: Icon(icons.mic, color: colors.white, size: 20));
+      opacity: 0.6,
+      child: SizedBox(
+        height: 40,
+        child: AvatarGlow(
+          endRadius: 20,
+          animate: _isListening,
+          glowColor: Theme.of(context).primaryColor,
+          duration: const Duration(milliseconds: 2000),
+          repeat: true,
+          repeatPauseDuration: const Duration(milliseconds: 100),
+          showTwoGlows: true,
+          child: GestureDetector(
+            onTapDown: (details) async {
+              if (!_isListening) {
+                var available = await speechtotext.initialize(
+                  onStatus: (val) => print('onStatus: $val'),
+                  onError: (val) => print('onError: $val'),
+                );
+                if (available) {
+                  setState(() {
+                    _isListening = true;
+                    speechtotext.listen(
+                      onResult: (val) => setState(() {
+                        widget.controller.text = val.recognizedWords;
+                        clearButtonVisibility = true;
+                      }),
+                    );
+                  });
+                }
+              }
+            },
+            onTapUp: (details) {
+              setState(() {
+                _isListening = false;
+              });
+              speechtotext.stop();
+            },
+            child: CircleAvatar(
+              radius: 30,
+              child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Expanded _searchbar(double screenHeight) {
