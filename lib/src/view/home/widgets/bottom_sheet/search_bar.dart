@@ -1,8 +1,10 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:pera/src/core/base/base_singleton.dart';
 import 'package:pera/src/core/components/sizedbox/custom_sized_box.dart';
 import 'package:pera/src/core/constants/enums/snapping_sheet_status.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class SearchBar extends StatefulWidget {
   final SnappingSheetController draggableController;
@@ -22,6 +24,8 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> with BaseSingleton {
+  SpeechToText speechToText = SpeechToText();
+  bool _isListening = false;
   bool clearButtonVisibility = false;
 
   @override
@@ -78,7 +82,63 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
 
   Opacity _opacity() {
     return Opacity(
-        opacity: 0.6, child: Icon(icons.mic, color: colors.white, size: 20));
+      opacity: 0.6,
+      child: SizedBox(
+        height: 40,
+        child: AvatarGlow(
+          endRadius: 20,
+          animate: _isListening,
+          startDelay: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 5000),
+          repeat: true,
+          repeatPauseDuration: const Duration(milliseconds: 100),
+          showTwoGlows: true,
+          child: GestureDetector(
+            onTap: () async {
+              if (!_isListening) {
+                var available = await speechToText.initialize(
+                  onStatus: (val) => print('onStatus: $val'),
+                  onError: (val) => print('onError: $val'),
+                );
+                if (available) {
+                  setState(() {
+                    _isListening = true;
+                    speechToText.listen(
+                      onResult: (val) => setState(() {
+                        widget.controller.text = val.recognizedWords;
+                        _isListening = false;
+                        clearButtonVisibility = true;
+
+                        if (widget.controller.text.isNotEmpty) {
+                          if (mounted) {
+                            setState(() {
+                              widget.status.value = SnappingSheetStatus.search;
+                              widget.setText();
+                            });
+                          }
+                        }
+                      }),
+                    );
+                  });
+                }
+              } else {
+                setState(() {
+                  _isListening = false;
+                });
+                speechToText.stop();
+              }
+            },
+            child: CircleAvatar(
+              radius: 20,
+              child: Icon(
+                _isListening ? Icons.mic : Icons.mic_none,
+                color: _isListening ? colors.red : colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Expanded _searchbar(double screenHeight) {
