@@ -24,16 +24,9 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> with BaseSingleton {
-  SpeechToText speechtotext = SpeechToText();
-  String _text = 'Press the button and start speaking';
+  SpeechToText speechToText = SpeechToText();
   bool _isListening = false;
   bool clearButtonVisibility = false;
-
-  void listen() {}
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,40 +88,52 @@ class _SearchBarState extends State<SearchBar> with BaseSingleton {
         child: AvatarGlow(
           endRadius: 20,
           animate: _isListening,
-          glowColor: Theme.of(context).primaryColor,
-          duration: const Duration(milliseconds: 2000),
+          startDelay: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 5000),
           repeat: true,
           repeatPauseDuration: const Duration(milliseconds: 100),
           showTwoGlows: true,
           child: GestureDetector(
-            onTapDown: (details) async {
+            onTap: () async {
               if (!_isListening) {
-                var available = await speechtotext.initialize(
+                var available = await speechToText.initialize(
                   onStatus: (val) => print('onStatus: $val'),
                   onError: (val) => print('onError: $val'),
                 );
                 if (available) {
                   setState(() {
                     _isListening = true;
-                    speechtotext.listen(
+                    speechToText.listen(
                       onResult: (val) => setState(() {
                         widget.controller.text = val.recognizedWords;
+                        _isListening = false;
                         clearButtonVisibility = true;
+
+                        if (widget.controller.text.isNotEmpty) {
+                          if (mounted) {
+                            setState(() {
+                              widget.status.value = SnappingSheetStatus.search;
+                              widget.setText();
+                            });
+                          }
+                        }
                       }),
                     );
                   });
                 }
+              } else {
+                setState(() {
+                  _isListening = false;
+                });
+                speechToText.stop();
               }
             },
-            onTapUp: (details) {
-              setState(() {
-                _isListening = false;
-              });
-              speechtotext.stop();
-            },
             child: CircleAvatar(
-              radius: 30,
-              child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+              radius: 20,
+              child: Icon(
+                _isListening ? Icons.mic : Icons.mic_none,
+                color: _isListening ? colors.red : colors.white,
+              ),
             ),
           ),
         ),

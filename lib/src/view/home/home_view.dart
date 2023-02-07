@@ -55,6 +55,10 @@ class _HomeState extends State<Home> with BaseSingleton {
     routes.addListener(() {
       updateMarkers(routes.value);
     });
+
+    polylines.addListener(() {
+      setState(() {});
+    });
   }
 
   setMapHeight(double height) {
