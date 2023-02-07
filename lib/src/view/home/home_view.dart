@@ -11,12 +11,14 @@ import 'package:pera/src/core/components/text/text_with_googlefonts_widget.dart'
 import 'package:pera/src/core/extensions/ui_extensions.dart';
 import 'package:pera/src/core/route/app_router.dart';
 import 'package:pera/src/view/home/model/place.dart';
+import 'package:pera/src/view/home/viewmodel/set_map_height.dart';
 import 'package:pera/src/view/home/service/location_service.dart';
 import 'package:pera/src/view/home/widgets/bottom_sheet/snapping_sheet.dart';
 import 'package:pera/src/view/home/widgets/top_section.dart';
 import 'dart:ui' as ui;
 import 'package:pera/src/view/login/model/user.dart';
 import 'package:pera/src/view/login/service/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   final ValueNotifier<AppUser?> user;
@@ -77,7 +79,7 @@ class _HomeState extends State<Home> with BaseSingleton {
             _sizedBoxMap(),
             _topSection(),
             SnappingSheetWidget(
-                mapHeightCallback: setMapHeight,
+                mapHeightCallback: context.read<SetMapHeight>().setDeviceHeight,
                 routes: routes,
                 polylines: polylines),
           ],
